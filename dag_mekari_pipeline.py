@@ -11,6 +11,18 @@ from airflow.operators.python import BranchPythonOperator
 
 credentials = service_account.Credentials.from_service_account_file('/opt/airflow/dags/mp/config/mekari_talenta_cred.json')
 
+
+dag = DAG ( 
+	'dag_mekari_pipeline', 
+	tags                    = ['pipeline'], 
+	default_args            = default_args, 
+	catchup                 = False, 
+	schedule_interval       = '0 1 * * *', #scheduler here boiiii
+	template_searchpath     = TEMPLATE_SEARCHPATH,
+	start_date              = datetime(2020, 4, 5)
+	)
+
+
 push_employees = LocalFilesystemToGCSOperator(
     task_id="push",
     src='/opt/airflow/dags/mekari/ext_file/employees.csv',
